@@ -1,0 +1,92 @@
+// FETCH DATA
+function fetch() {
+//     $.ajax({
+//         type: "get",
+//         url:_base_url+"admin/fetchdata",
+//         dataType: "json",
+//         success: function(response) {
+//             $('#showname').dataTable({
+//                 data: response,
+//                responsive: true,
+//         // dom: "<'row'<'col-sm-12 col-md-4'l><'col-sm-12 col-md-4'B>f>>" +
+//         //     "<'row'<'col-sm-12'tr>>" +
+//         //     "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+//         "pageLength": 5,
+//         "columns": [
+//                 { data: "name" }, { data: "price" },
+//                 {
+//                     data: "image",
+//                     render: function(data, type, row, meta) {
+//                         var a = `
+//                             <img src="${_base_url}upload/${row.image}" width="150" height="100" />
+//                         `;
+//                         return a;
+//                     },
+//                 },
+//                 { data: "status",
+//                 render: function(data, type, row, meta) {
+//                     if(row.status==1){
+//                     var a = `
+//                     <label class="switch">
+//                     <input id="status" type="checkbox" value="${row.id}" checked >
+//                     <span class="slider"></span>
+//                   </label>`;
+//                     return a;
+//                     }
+//                     else
+//                     {
+//                         var a = `
+//                         <label class="switch">
+//                         <input id="status" type="checkbox" value="${row.id}">
+//                         <span class="slider"></span>
+//                       </label>`;
+//                         return a;
+//                     }
+//                 },
+//             },
+//                 {
+//                     orderable: false,
+//                     searchable: false,
+//                     data: function(row, type, set) {  return `<a href="#" id="edit" class="btn btn-sm btn-outline-info" value="${row.id}"><i class="fas fa-edit"></i></a>
+//                    <a href="#" id="delete" class="btn btn-sm btn-outline-danger" value="${row.id}"><i class="fas fa-trash-alt"></i></a>`; }
+//                 }
+//          ],
+//         "aaSorting": [[ 0, "desc" ]]
+//     });
+// },
+// });
+}
+
+
+
+
+
+
+
+//status change
+$(document).on("change", "#status", function(e) {
+    e.preventDefault();
+
+    var status_id = $(this).attr("value");
+    
+        alert(status_id);
+        $.ajax({
+            type: "post",
+            url: _base_url+"admin/updatestatus",
+            data: {
+                status_id:status_id,
+            },
+            dataType: "json",
+            success: function(response) {
+                if (response.res == "success") {
+                    toastr["success"](response.message);
+                    $("#showname").DataTable().destroy();
+                        fetch();
+                } else {
+                    toastr["error"](response.message);
+                }
+            },
+        });
+    
+
+});
